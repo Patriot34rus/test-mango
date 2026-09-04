@@ -35,10 +35,10 @@ try{
 
     exit;
 }catch (\Throwable $e){
-    http_response_code($e->getCode());
+    http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode([
-        'status' => $e->getCode(),
+        'status' => 500,
         'error'  => 'Internal Error'
     ]);
 
