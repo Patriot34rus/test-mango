@@ -28,7 +28,7 @@ class CalendarController extends AController
 
     public function addCustom(Request $request): Response{
         $date = $this->createDate($request->getParameter('date'));
-        $comment = (string) $request->getParameter('comment');
+        $comment = $this->escape($request->getParameter('comment'));
         $type = $this->createType((int)$request->getParameter('type'));
 
         $result = $this->calendarService->addCalendarDay($date, $type, $comment);
@@ -38,7 +38,7 @@ class CalendarController extends AController
 
     public function editCustom(Request $request): Response{
         $date = $this->createDate($request->getParameter('date'));
-        $comment = (string) $request->getParameter('comment');
+        $comment = $this->escape($request->getParameter('comment'));
         $type = $this->createType((int)$request->getParameter('type'));
 
         $result = $this->calendarService->updateCalendarDay($date, $type, $comment);
@@ -84,5 +84,15 @@ class CalendarController extends AController
         }
 
         return $type;
+    }
+
+    private function escape(string $value): string
+    {
+        return htmlspecialchars(
+            (string) $value,
+            ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5,
+            'UTF-8',
+            false
+        );
     }
 }
